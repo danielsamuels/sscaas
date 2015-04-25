@@ -2,11 +2,11 @@ package dellarism
 
 import (
     "strings"
-	"time"
-	"math/rand"
-	"fmt"
-	"net/http"
-	"github.com/danielsamuels/sscaas/sscaas"
+    "time"
+    "math/rand"
+    "fmt"
+    "net/http"
+    "github.com/danielsamuels/sscaas/sscaas"
 )
 
 type Plugin struct {
