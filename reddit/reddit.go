@@ -10,19 +10,19 @@ import (
 )
 
 type Reddit struct {
-    http.ResponseWriter
-    *http.Request
+    Writer http.ResponseWriter
+    Request *http.Request
 }
 
-func (r *Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
-    subreddit := r.URL.Query().Get("text")
+func (r Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+    subreddit := r.Request.URL.Query().Get("text")
 
     if len(subreddit) == 0 {
-        http.Error(r.ResponseWriter, "No subreddit supplied.", http.StatusBadRequest)
+        http.Error(r.Writer, "No subreddit supplied.", http.StatusBadRequest)
         return &sscaas.PluginResponse{}, errors.New("No subreddit supplied.")
     }
 
-    url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", r.URL.Query().Get("text"))
+    url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", r.Request.URL.Query().Get("text"))
 
     client := &http.Client{}
 
@@ -32,7 +32,7 @@ func (r *Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse
 
     if err != nil || resp.StatusCode != 200 {
         if resp.StatusCode == 404 {
-            http.Error(r.ResponseWriter, "That subreddit does not exist.", http.StatusNotFound)
+            http.Error(r.Writer, "That subreddit does not exist.", http.StatusNotFound)
             return &sscaas.PluginResponse{}, errors.New("That subreddit does not exist.")
         } else {
             return &sscaas.PluginResponse{}, errors.New("There was an error with the request.")
@@ -59,7 +59,7 @@ func (r *Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse
 
     returnString := fmt.Sprintf(
         "%v - %v (%v): http://www.reddit.com/r/%v %v",
-        r.URL.Query().Get("user_name"),
+        r.Request.URL.Query().Get("user_name"),
         data["display_name"],
         data["title"],
         subreddit,
