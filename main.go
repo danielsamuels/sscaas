@@ -62,7 +62,9 @@ func main() {
             // TODO: Make some sort of plugin registration system?
             switch key {
                 case "reddit":
-                    plugin = reddit.Reddit{w, r}
+                    plugin = reddit.Plugin{w, r}
+                case "urbandictionary":
+                    plugin = urbandictionary.Plugin{w, r}
             }
 
             if plugin != nil {
@@ -82,6 +84,8 @@ func main() {
 
                     // Make the request to the Slack API.
                     http.PostForm(r.URL.Query().Get("callback"), url.Values{"payload": {stringJSON}})
+                } else {
+                    http.Error(w, err.Error(), 200)
                 }
             } else {
                 errorText := "Sorry, it was not possible to load that plugin."
