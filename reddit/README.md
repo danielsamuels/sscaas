@@ -7,7 +7,7 @@ Get the meta-data of a subreddit.
 * Copy the Webhook URL
 
 * Add a Slash Command to your account: https://slack.com/services/new/slash-commands
-* Set the URL to: http://sscaas.co/reddit/?callback=<webhook URL>
+* Set the URL to: http://sscaas.eu/reddit/?callback=<webhook URL&gt;
 * Set the Method to 'GET'
 
 * Add a reddit emoji: https://slack.com/customize/emoji
