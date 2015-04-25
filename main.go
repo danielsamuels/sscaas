@@ -1,15 +1,16 @@
 package main
 
 import (
-	"net/url"
-	"encoding/json"
+	// "net/url"
+	// "encoding/json"
+    "github.com/danielsamuels/sscaas/sscaas"
 	"github.com/danielsamuels/sscaas/reddit"
-	"strconv"
-	"strings"
+	// "strconv"
+	// "strings"
 	"time"
 	"net/http"
 	"fmt"
-	"log"
+	// "log"
 )
 
 func logRequest(w http.ResponseWriter, r *http.Request, contentLength string, statusCode int) {
@@ -34,11 +35,26 @@ type responsePayload struct {
 
 
 func main() {
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        redditObj := reddit.Reddit{
+            w,
+            r,
+        }
+
+        plugin := sscaas.Plugin(redditObj)
+        fmt.Println("redditObj details are: ", redditObj)
+        fmt.Println("plugin is: ", plugin)
+    })
+    http.ListenAndServe(":8080", nil)
+}
+
+/*
+func main2() {
     port := 8080
 
     // Maintain a map of all available 'plugins'. They must all have the same signature.
-    plugins := map[string]func(http.ResponseWriter, *http.Request) (string, string, string, error) {
-        "reddit": reddit.Run,
+    plugins := map[string]func(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+        "reddit": reddit.Reddit,
     }
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -61,15 +77,15 @@ func main() {
 
             // Check if the path matches a plugin. If it does, execute it.
             if plugin, ok := plugins[key]; ok {
-                username, emoji, text, err := plugin(w, r)
+                res, err := plugin {w, r}
 
                 if err == nil {
                     // Create the JSON payload.
                     responsePayload := &responsePayload{
                         Channel: r.URL.Query().Get("channel_id"),
-                        Username: username,
-                        IconEmoji: emoji,
-                        Text: text,
+                        Username: res.Username,
+                        IconEmoji: res.Emoji,
+                        Text: res.Text,
                     }
 
                     responsePayloadJSON, _ := json.Marshal(responsePayload)
@@ -92,3 +108,4 @@ func main() {
     fmt.Printf("Running server on port %d..\n", port)
     log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
+*/

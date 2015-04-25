@@ -1,6 +1,7 @@
 package reddit
 
 import (
+    "github.com/danielsamuels/sscaas/sscaas"
 	"errors"
 	"encoding/json"
 	"io/ioutil"
@@ -8,13 +9,17 @@ import (
 	"net/http"
 )
 
+type Reddit struct {
+    http.ResponseWriter
+    *http.Request
+}
 
-func Run(w http.ResponseWriter, r *http.Request) (string, string, string, error) {
+func (r *Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
     subreddit := r.URL.Query().Get("text")
 
     if len(subreddit) == 0 {
-        http.Error(w, "No subreddit supplied.", http.StatusBadRequest)
-        return "", "", "", errors.New("No subreddit supplied.")
+        http.Error(r.ResponseWriter, "No subreddit supplied.", http.StatusBadRequest)
+        return &sscaas.PluginResponse{}, errors.New("No subreddit supplied.")
     }
 
     url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", r.URL.Query().Get("text"))
@@ -27,10 +32,10 @@ func Run(w http.ResponseWriter, r *http.Request) (string, string, string, error)
 
     if err != nil || resp.StatusCode != 200 {
         if resp.StatusCode == 404 {
-            http.Error(w, "That subreddit does not exist.", http.StatusNotFound)
-            return "", "", "", errors.New("That subreddit does not exist.")
+            http.Error(r.ResponseWriter, "That subreddit does not exist.", http.StatusNotFound)
+            return &sscaas.PluginResponse{}, errors.New("That subreddit does not exist.")
         } else {
-            return "", "", "", errors.New("There was an error with the request.")
+            return &sscaas.PluginResponse{}, errors.New("There was an error with the request.")
         }
     }
 
@@ -38,7 +43,7 @@ func Run(w http.ResponseWriter, r *http.Request) (string, string, string, error)
 
     if err != nil {
         fmt.Println("There was an error parsing the response.")
-        return "", "", "", err
+        return &sscaas.PluginResponse{}, err
     }
 
     var base_data map[string]interface{}
@@ -61,5 +66,9 @@ func Run(w http.ResponseWriter, r *http.Request) (string, string, string, error)
         nsfw,
     )
 
-    return "Reddit Bot", ":reddit:", returnString, nil
+    return &sscaas.PluginResponse{
+        Username: "Reddit Bot",
+        Emoji: ":reddit:",
+        Text: returnString,
+    }, nil
 }
