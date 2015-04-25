@@ -42,7 +42,6 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
     body, err := ioutil.ReadAll(resp.Body)
 
     if err != nil {
-        fmt.Println("There was an error parsing the response.")
         return &sscaas.PluginResponse{}, err
     }
 

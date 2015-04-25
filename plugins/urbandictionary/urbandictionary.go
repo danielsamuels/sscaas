@@ -28,16 +28,12 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
     }
 
     if err == nil {
-        fmt.Println(baseData)
-
         returnString := fmt.Sprintf(
             "%v: %v - %v",
             p.Request.URL.Query().Get("user_name"),
             p.Request.URL.Query().Get("text"),
             baseData["definition"],
         )
-
-        fmt.Println(returnString)
 
         return &sscaas.PluginResponse{
             Username: "Urban Dictionary Bot",
