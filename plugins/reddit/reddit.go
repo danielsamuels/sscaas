@@ -9,20 +9,20 @@ import (
     "net/http"
 )
 
-type Reddit struct {
+type Plugin struct {
     Writer http.ResponseWriter
     Request *http.Request
 }
 
-func (r Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
-    subreddit := r.Request.URL.Query().Get("text")
+func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+    subreddit := p.Request.URL.Query().Get("text")
 
     if len(subreddit) == 0 {
-        http.Error(r.Writer, "No subreddit supplied.", http.StatusBadRequest)
+        http.Error(p.Writer, "No subreddit supplied.", http.StatusBadRequest)
         return &sscaas.PluginResponse{}, errors.New("No subreddit supplied.")
     }
 
-    url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", r.Request.URL.Query().Get("text"))
+    url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", p.Request.URL.Query().Get("text"))
 
     client := &http.Client{}
 
@@ -32,11 +32,11 @@ func (r Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 
     if err != nil || resp.StatusCode != 200 {
         if resp.StatusCode == 404 {
-            http.Error(r.Writer, "That subreddit does not exist.", http.StatusNotFound)
+            http.Error(p.Writer, "That subreddit does not exist.", http.StatusNotFound)
             return &sscaas.PluginResponse{}, errors.New("That subreddit does not exist.")
-        } else {
-            return &sscaas.PluginResponse{}, errors.New("There was an error with the request.")
         }
+
+        return &sscaas.PluginResponse{}, errors.New("There was an error with the request.")
     }
 
     body, err := ioutil.ReadAll(resp.Body)
@@ -46,11 +46,11 @@ func (r Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
         return &sscaas.PluginResponse{}, err
     }
 
-    var base_data map[string]interface{}
-    json.Unmarshal([]byte(body), &base_data)
-    data_key := base_data["data"]
+    var baseData map[string]interface{}
+    json.Unmarshal([]byte(body), &baseData)
+    dataKey := baseData["data"]
 
-    data := data_key.(map[string]interface{})
+    data := dataKey.(map[string]interface{})
     nsfw := ""
 
     if data["over18"] == true {
@@ -59,7 +59,7 @@ func (r Reddit) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 
     returnString := fmt.Sprintf(
         "%v - %v (%v): http://www.reddit.com/r/%v %v",
-        r.Request.URL.Query().Get("user_name"),
+        p.Request.URL.Query().Get("user_name"),
         data["display_name"],
         data["title"],
         subreddit,
