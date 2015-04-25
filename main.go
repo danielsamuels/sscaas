@@ -25,10 +25,10 @@ func logRequest(w http.ResponseWriter, r *http.Request, contentLength string, st
     )
 }
 
-type ResponsePayload struct {
+type responsePayload struct {
     Channel     string  `json:"channel"`
     Username    string  `json:"username"`
-    Icon_Emoji  string  `json:"icon_emoji"`
+    IconEmoji   string  `json:"icon_emoji"`
     Text        string  `json:"text"`
 }
 
@@ -65,18 +65,18 @@ func main() {
 
                 if username != "" && emoji != "" && text != "" {
                     // Create the JSON payload.
-                    response_payload := &ResponsePayload{
+                    responsePayload := &responsePayload{
                         Channel: r.URL.Query().Get("channel_id"),
                         Username: username,
-                        Icon_Emoji: emoji,
+                        IconEmoji: emoji,
                         Text: text,
                     }
 
-                    response_payload_json, _ := json.Marshal(response_payload)
-                    string_json := string(response_payload_json[:])
+                    responsePayloadJSON, _ := json.Marshal(responsePayload)
+                    stringJSON := string(responsePayloadJSON[:])
 
                     // Make the request to the Slack API.
-                    http.PostForm(r.URL.Query().Get("callback"), url.Values{"payload": {string_json}})
+                    http.PostForm(r.URL.Query().Get("callback"), url.Values{"payload": {stringJSON}})
                 }
             } else {
                 errorText := "Sorry, it was not possible to load that plugin."
