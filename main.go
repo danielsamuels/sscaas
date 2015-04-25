@@ -11,6 +11,7 @@ import (
     "net/http"
     "fmt"
 
+    "github.com/danielsamuels/sscaas/plugins/dellarism"
     "github.com/danielsamuels/sscaas/plugins/reddit"
     "github.com/danielsamuels/sscaas/plugins/urbandictionary"
 )
@@ -65,6 +66,8 @@ func main() {
                     plugin = reddit.Plugin{w, r}
                 case "urbandictionary":
                     plugin = urbandictionary.Plugin{w, r}
+                case "dellarism":
+                    plugin = dellarism.Plugin{w, r}
             }
 
             if plugin != nil {
