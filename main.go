@@ -37,7 +37,7 @@ func main() {
     port := 8080
 
     // Maintain a map of all available 'plugins'. They must all have the same signature.
-    plugins := map[string]func(http.ResponseWriter, *http.Request) (string, string, string) {
+    plugins := map[string]func(http.ResponseWriter, *http.Request) (string, string, string, error) {
         "reddit": reddit.Run,
     }
 
@@ -61,9 +61,9 @@ func main() {
 
             // Check if the path matches a plugin. If it does, execute it.
             if plugin, ok := plugins[key]; ok {
-                username, emoji, text := plugin(w, r)
+                username, emoji, text, err := plugin(w, r)
 
-                if username != "" && emoji != "" && text != "" {
+                if err == nil {
                     // Create the JSON payload.
                     responsePayload := &responsePayload{
                         Channel: r.URL.Query().Get("channel_id"),

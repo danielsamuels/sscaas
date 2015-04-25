@@ -1,6 +1,7 @@
 package reddit
 
 import (
+	"errors"
 	"encoding/json"
 	"io/ioutil"
 	"fmt"
@@ -8,13 +9,12 @@ import (
 )
 
 
-func Run(w http.ResponseWriter, r *http.Request) (string, string, string) {
+func Run(w http.ResponseWriter, r *http.Request) (string, string, string, error) {
     subreddit := r.URL.Query().Get("text")
 
     if len(subreddit) == 0 {
         http.Error(w, "No subreddit supplied.", http.StatusBadRequest)
-        // TODO: Learn if there's a better way to exit functions early.
-        return "", "", ""
+        return "", "", "", errors.New("No subreddit supplied.")
     }
 
     url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", r.URL.Query().Get("text"))
@@ -28,10 +28,9 @@ func Run(w http.ResponseWriter, r *http.Request) (string, string, string) {
     if err != nil || resp.StatusCode != 200 {
         if resp.StatusCode == 404 {
             http.Error(w, "That subreddit does not exist.", http.StatusNotFound)
-            return "", "", ""
+            return "", "", "", errors.New("That subreddit does not exist.")
         } else {
-            fmt.Println("There was an error with the request.")
-            panic(err.Error())
+            return "", "", "", errors.New("There was an error with the request.")
         }
     }
 
@@ -39,7 +38,7 @@ func Run(w http.ResponseWriter, r *http.Request) (string, string, string) {
 
     if err != nil {
         fmt.Println("There was an error parsing the response.")
-        panic(err.Error())
+        return "", "", "", err
     }
 
     var base_data map[string]interface{}
@@ -62,5 +61,5 @@ func Run(w http.ResponseWriter, r *http.Request) (string, string, string) {
         nsfw,
     )
 
-    return "Reddit Bot", ":reddit:", returnString
+    return "Reddit Bot", ":reddit:", returnString, nil
 }
