@@ -7,7 +7,7 @@ import (
 	"strings"
 	"strconv"
 	"github.com/danielsamuels/sscaas/sscaas"
-	"github.com/danielsamuels/sscaas/reddit"
+	"github.com/danielsamuels/sscaas/plugins/reddit"
 	"time"
 	"net/http"
 	"fmt"
