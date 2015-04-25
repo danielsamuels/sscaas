@@ -1,7 +1,7 @@
 package sscaas
 
 import (
-	"net/http"
+    "net/http"
 )
 
 type Plugin interface {

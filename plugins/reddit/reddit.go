@@ -2,11 +2,11 @@ package reddit
 
 import (
     "github.com/danielsamuels/sscaas/sscaas"
-	"errors"
-	"encoding/json"
-	"io/ioutil"
-	"fmt"
-	"net/http"
+    "errors"
+    "encoding/json"
+    "io/ioutil"
+    "fmt"
+    "net/http"
 )
 
 type Reddit struct {

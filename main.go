@@ -1,16 +1,18 @@
 package main
 
 import (
-	"net/url"
-	"encoding/json"
-	"log"
-	"strings"
-	"strconv"
-	"github.com/danielsamuels/sscaas/sscaas"
-	"github.com/danielsamuels/sscaas/plugins/reddit"
-	"time"
-	"net/http"
-	"fmt"
+    "net/url"
+    "encoding/json"
+    "log"
+    "strings"
+    "strconv"
+    "github.com/danielsamuels/sscaas/sscaas"
+    "time"
+    "net/http"
+    "fmt"
+
+    "github.com/danielsamuels/sscaas/plugins/reddit"
+    "github.com/danielsamuels/sscaas/plugins/urbandictionary"
 )
 
 func logRequest(w http.ResponseWriter, r *http.Request, contentLength string, statusCode int) {
