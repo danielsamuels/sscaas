@@ -15,6 +15,7 @@ import (
     "github.com/danielsamuels/sscaas/plugins/dellarism"
     "github.com/danielsamuels/sscaas/plugins/excuse"
     "github.com/danielsamuels/sscaas/plugins/reddit"
+    "github.com/danielsamuels/sscaas/plugins/uptime"
     "github.com/danielsamuels/sscaas/plugins/urbandictionary"
 )
 
@@ -74,6 +75,8 @@ func main() {
                     plugin = define.Plugin{w, r}
                 case "excuse":
                     plugin = excuse.Plugin{w, r}
+                case "uptime":
+                    plugin = uptime.Plugin{w, r}
             }
 
             if plugin != nil {
