@@ -1,6 +1,7 @@
 # Slack Slash Commands as a Service
+## Making Slack better since some time early 2015.
 
-A conversion-in-progress of a set of Python functions into Go.
+https://sscaas.eu/
 
 ## Example package
 
