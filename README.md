@@ -1,7 +1,6 @@
 # Slack Slash Commands as a Service
-## Making Slack better since some time early 2015.
 
-https://sscaas.eu/
+Website: https://sscaas.eu/
 
 ## Example package
 
