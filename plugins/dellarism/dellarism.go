@@ -29,6 +29,14 @@ func random(min, max int) int {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+	userName := ""
+
+	if p.Request.Method == "POST" {
+		userName = p.Request.Form.Get("user_name")
+	} else {
+		userName = p.Request.URL.Query().Get("user_name")
+	}
+
 	generatedString := ""
 
 	firstWord := []string{"Change", "Make", "Build", "Need", "Put"}
@@ -52,7 +60,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 		Emoji:    ":dellar:",
 		Text: fmt.Sprintf(
 			"%v, your Dellarism is: %v",
-			p.Request.URL.Query().Get("user_name"),
+			userName,
 			generatedString,
 		),
 	}, nil

@@ -21,8 +21,16 @@ type soundcloudTrack struct {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+	text := ""
+
+	if p.Request.Method == "POST" {
+		text = p.Request.Form.Get("text")
+	} else {
+		text = p.Request.URL.Query().Get("text")
+	}
+
 	clientID := "a45552608d49ea7babda4dde4a1e82e4"
-	url := fmt.Sprintf("https://api.soundcloud.com/tracks/?q=%v&client_id=%v", url.QueryEscape(p.Request.URL.Query().Get("text")), clientID)
+	url := fmt.Sprintf("https://api.soundcloud.com/tracks/?q=%v&client_id=%v", url.QueryEscape(text), clientID)
 	resp, err := http.Get(url)
 
 	if err != nil || resp.StatusCode != 200 {
@@ -40,7 +48,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	json.Unmarshal(body, &baseData)
 
 	if len(baseData) == 0 {
-		return &sscaas.PluginResponse{}, errors.New(fmt.Sprintf("Unable to find any results for %v.", p.Request.URL.Query().Get("text")))
+		return &sscaas.PluginResponse{}, errors.New(fmt.Sprintf("Unable to find any results for %v.", text))
 	}
 
 	return &sscaas.PluginResponse{

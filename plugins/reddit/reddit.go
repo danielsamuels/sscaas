@@ -15,14 +15,23 @@ type Plugin struct {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
-	subreddit := p.Request.URL.Query().Get("text")
+	text := ""
+	userName := ""
 
-	if len(subreddit) == 0 {
+	if p.Request.Method == "POST" {
+		text = p.Request.Form.Get("text")
+		userName = p.Request.Form.Get("user_name")
+	} else {
+		text = p.Request.URL.Query().Get("text")
+		userName = p.Request.URL.Query().Get("user_name")
+	}
+
+	if len(text) == 0 {
 		http.Error(p.Writer, "No subreddit supplied.", http.StatusBadRequest)
 		return &sscaas.PluginResponse{}, errors.New("No subreddit supplied.")
 	}
 
-	url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", p.Request.URL.Query().Get("text"))
+	url := fmt.Sprintf("http://www.reddit.com/r/%s/about.json", text)
 
 	client := &http.Client{}
 
@@ -58,10 +67,10 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 
 	returnString := fmt.Sprintf(
 		"%v - %v (%v): http://www.reddit.com/r/%v %v",
-		p.Request.URL.Query().Get("user_name"),
+		userName,
 		data["display_name"],
 		data["title"],
-		subreddit,
+		text,
 		nsfw,
 	)
 

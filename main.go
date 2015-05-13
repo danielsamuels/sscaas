@@ -50,13 +50,24 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		statusCode := 200
 		contentLength := ""
+		channelID := ""
+		callback := ""
 
-		if len(r.URL.Query().Get("channel_id")) == 0 {
+		if r.Method == "POST" {
+			r.ParseForm()
+			channelID = r.Form.Get("channel_id")
+			callback = r.Form.Get("callback")
+		} else {
+			channelID = r.URL.Query().Get("channel_id")
+			callback = r.URL.Query().Get("callback")
+		}
+
+		if len(channelID) == 0 {
 			errorText := "No channel supplied."
 			http.Error(w, errorText, http.StatusBadRequest)
 			statusCode = 400
 			contentLength = strconv.Itoa(len(errorText))
-		} else if len(r.URL.Query().Get("callback")) == 0 {
+		} else if len(callback) == 0 {
 			errorText := "No callback supplied."
 			http.Error(w, errorText, http.StatusBadRequest)
 			statusCode = 400
@@ -96,7 +107,7 @@ func main() {
 				if err == nil {
 					// Create the JSON payload.
 					responsePayload := &responsePayload{
-						Channel:     r.URL.Query().Get("channel_id"),
+						Channel:     channelID,
 						Username:    res.Username,
 						IconEmoji:   res.Emoji,
 						Text:        res.Text,
@@ -108,7 +119,7 @@ func main() {
 					stringJSON := string(responsePayloadJSON[:])
 
 					// Make the request to the Slack API.
-					http.PostForm(r.URL.Query().Get("callback"), url.Values{"payload": {stringJSON}})
+					http.PostForm(callback, url.Values{"payload": {stringJSON}})
 				} else {
 					http.Error(w, err.Error(), 200)
 				}

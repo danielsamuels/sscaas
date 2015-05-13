@@ -16,9 +16,20 @@ type Plugin struct {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+	text := ""
+	userName := ""
+
+	if p.Request.Method == "POST" {
+		text = p.Request.Form.Get("text")
+		userName = p.Request.Form.Get("user_name")
+	} else {
+		text = p.Request.URL.Query().Get("text")
+		userName = p.Request.URL.Query().Get("user_name")
+	}
+
 	url := fmt.Sprintf(
 		"http://api.wordnik.com/v4/word.json/%v/definitions?limit=1&includeRelated=false&useCanonical=false&includeTags=true&api_key=f8ab3913c02c28a5b8a4c086d3b072d3b92e4551e13f52d0f",
-		url.QueryEscape(p.Request.URL.Query().Get("text")),
+		url.QueryEscape(text),
 	)
 	resp, err := http.Get(url)
 
@@ -38,7 +49,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	if err == nil {
 		returnString := fmt.Sprintf(
 			"%v: %v - %v",
-			p.Request.URL.Query().Get("user_name"),
+			userName,
 			baseData["word"],
 			baseData["text"],
 		)

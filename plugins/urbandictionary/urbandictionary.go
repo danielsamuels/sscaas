@@ -16,7 +16,18 @@ type Plugin struct {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
-	url := fmt.Sprintf("http://urbanscraper.herokuapp.com/define/%v", url.QueryEscape(p.Request.URL.Query().Get("text")))
+	text := ""
+	userName := ""
+
+	if p.Request.Method == "POST" {
+		text = p.Request.Form.Get("text")
+		userName = p.Request.Form.Get("user_name")
+	} else {
+		text = p.Request.URL.Query().Get("text")
+		userName = p.Request.URL.Query().Get("user_name")
+	}
+
+	url := fmt.Sprintf("http://urbanscraper.herokuapp.com/define/%v", url.QueryEscape(text))
 	resp, err := http.Get(url)
 
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -30,8 +41,8 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	if err == nil {
 		returnString := fmt.Sprintf(
 			"%v: %v - %v",
-			p.Request.URL.Query().Get("user_name"),
-			p.Request.URL.Query().Get("text"),
+			userName,
+			text,
 			baseData["definition"],
 		)
 

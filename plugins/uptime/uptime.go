@@ -23,7 +23,15 @@ type Plugin struct {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
-	url := fmt.Sprintf("http://www.downforeveryoneorjustme.com/%v", p.Request.URL.Query().Get("text"))
+	text := ""
+
+	if p.Request.Method == "POST" {
+		text = p.Request.Form.Get("text")
+	} else {
+		text = p.Request.URL.Query().Get("text")
+	}
+
+	url := fmt.Sprintf("http://www.downforeveryoneorjustme.com/%v", text)
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -34,7 +42,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	stringBody := string(body[:])
 
 	if strings.Contains(stringBody, "It's just you") {
-		return &sscaas.PluginResponse{}, errors.New(fmt.Sprintf("%v is up", p.Request.URL.Query().Get("text")))
+		return &sscaas.PluginResponse{}, errors.New(fmt.Sprintf("%v is up", text))
 	}
-	return &sscaas.PluginResponse{}, errors.New(fmt.Sprintf("%v is down", p.Request.URL.Query().Get("text")))
+	return &sscaas.PluginResponse{}, errors.New(fmt.Sprintf("%v is down", text))
 }

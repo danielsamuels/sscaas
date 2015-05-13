@@ -14,6 +14,14 @@ type Plugin struct {
 }
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
+	userName := ""
+
+	if p.Request.Method == "POST" {
+		userName = p.Request.Form.Get("user_name")
+	} else {
+		userName = p.Request.URL.Query().Get("user_name")
+	}
+
 	url := fmt.Sprintf("http://www.programmerexcuses.com/")
 	resp, err := goquery.NewDocument(url)
 
@@ -26,7 +34,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 		Emoji:    ":no_entry_sign:",
 		Text: fmt.Sprintf(
 			"%v says: %v",
-			p.Request.URL.Query().Get("user_name"),
+			userName,
 			resp.Find("center a").Text(),
 		),
 	}, nil
