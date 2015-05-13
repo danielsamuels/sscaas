@@ -25,8 +25,6 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	url := fmt.Sprintf("https://api.soundcloud.com/tracks/?q=%v&client_id=%v", url.QueryEscape(p.Request.URL.Query().Get("text")), clientID)
 	resp, err := http.Get(url)
 
-	fmt.Println(resp.StatusCode)
-
 	if err != nil || resp.StatusCode != 200 {
 		return &sscaas.PluginResponse{}, errors.New(resp.Status)
 	}
