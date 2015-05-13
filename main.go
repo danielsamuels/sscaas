@@ -34,10 +34,12 @@ func logRequest(w http.ResponseWriter, r *http.Request, contentLength string, st
 }
 
 type responsePayload struct {
-	Channel   string `json:"channel"`
-	Username  string `json:"username"`
-	IconEmoji string `json:"icon_emoji"`
-	Text      string `json:"text"`
+	Channel     string `json:"channel"`
+	Username    string `json:"username"`
+	IconEmoji   string `json:"icon_emoji"`
+	Text        string `json:"text"`
+	UnfurlMedia bool   `json:"unfurl_media"`
+	UnfurlLinks bool   `json:"unfurl_links"`
 }
 
 func main() {
@@ -76,6 +78,8 @@ func main() {
 				plugin = define.Plugin{w, r}
 			case "excuse":
 				plugin = excuse.Plugin{w, r}
+			case "soundcloud":
+				plugin = soundcloud.Plugin{w, r}
 			case "uptime":
 				plugin = uptime.Plugin{w, r}
 			}
@@ -86,10 +90,12 @@ func main() {
 				if err == nil {
 					// Create the JSON payload.
 					responsePayload := &responsePayload{
-						Channel:   r.URL.Query().Get("channel_id"),
-						Username:  res.Username,
-						IconEmoji: res.Emoji,
-						Text:      res.Text,
+						Channel:     r.URL.Query().Get("channel_id"),
+						Username:    res.Username,
+						IconEmoji:   res.Emoji,
+						Text:        res.Text,
+						UnfurlMedia: true,
+						UnfurlLinks: true,
 					}
 
 					responsePayloadJSON, _ := json.Marshal(responsePayload)
