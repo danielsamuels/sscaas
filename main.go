@@ -15,6 +15,7 @@ import (
 	"github.com/danielsamuels/sscaas/plugins/dellarism"
 	"github.com/danielsamuels/sscaas/plugins/excuse"
 	"github.com/danielsamuels/sscaas/plugins/reddit"
+	"github.com/danielsamuels/sscaas/plugins/sing"
 	"github.com/danielsamuels/sscaas/plugins/soundcloud"
 	"github.com/danielsamuels/sscaas/plugins/troutslap"
 	"github.com/danielsamuels/sscaas/plugins/uptime"
@@ -79,6 +80,8 @@ func main() {
 				plugin = define.Plugin{w, r}
 			case "excuse":
 				plugin = excuse.Plugin{w, r}
+			case "sing":
+				plugin = sing.Plugin{w, r}
 			case "soundcloud":
 				plugin = soundcloud.Plugin{w, r}
 			case "troutslap":
