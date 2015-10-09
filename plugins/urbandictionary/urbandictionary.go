@@ -40,10 +40,11 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 
 	if err == nil {
 		returnString := fmt.Sprintf(
-			"%v: %v - %v",
+			"%v: %v - %v\n\n_%v_",
 			userName,
 			text,
 			baseData["definition"],
+			baseData["example"],
 		)
 
 		return &sscaas.PluginResponse{
