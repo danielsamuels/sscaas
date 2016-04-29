@@ -63,5 +63,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 			userName,
 			generatedString,
 		),
+		UnfurlLinks: true,
+		UnfurlMedia: true,
 	}, nil
 }

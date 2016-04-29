@@ -14,4 +14,6 @@ type PluginResponse struct {
     Username    string
     Emoji       string
     Text        string
+    UnfurlMedia bool
+    UnfurlLinks bool
 }

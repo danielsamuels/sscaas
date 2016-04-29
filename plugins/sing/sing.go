@@ -27,5 +27,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 			":musical_note: %v :musical_note:",
 			text,
 		),
+		UnfurlLinks: true,
+		UnfurlMedia: true,
 	}, nil
 }
