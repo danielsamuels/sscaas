@@ -37,5 +37,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 			userName,
 			resp.Find("center a").Text(),
 		),
+		UnfurlLinks: true,
+		UnfurlMedia: true,
 	}, nil
 }

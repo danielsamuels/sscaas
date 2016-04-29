@@ -65,5 +65,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 		Username: "Dictionary Bot",
 		Emoji:    ":book:",
 		Text:     "",
+		UnfurlLinks: true,
+		UnfurlMedia: true,
 	}, nil
 }

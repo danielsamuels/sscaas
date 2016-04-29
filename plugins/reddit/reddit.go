@@ -78,5 +78,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 		Username: "Reddit Bot",
 		Emoji:    ":reddit:",
 		Text:     returnString,
+		UnfurlLinks: true,
+		UnfurlMedia: true,
 	}, nil
 }

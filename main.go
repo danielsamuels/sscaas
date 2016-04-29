@@ -20,6 +20,7 @@ import (
 	"github.com/danielsamuels/sscaas/plugins/troutslap"
 	"github.com/danielsamuels/sscaas/plugins/uptime"
 	"github.com/danielsamuels/sscaas/plugins/urbandictionary"
+	"github.com/danielsamuels/sscaas/plugins/nsfw"
 )
 
 func logRequest(w http.ResponseWriter, r *http.Request, contentLength string, statusCode int) {
@@ -99,6 +100,8 @@ func main() {
 				plugin = troutslap.Plugin{w, r}
 			case "uptime":
 				plugin = uptime.Plugin{w, r}
+			case "nsfw":
+				plugin = nsfw.Plugin{w, r}
 			}
 
 			if plugin != nil {
@@ -111,8 +114,8 @@ func main() {
 						Username:    res.Username,
 						IconEmoji:   res.Emoji,
 						Text:        res.Text,
-						UnfurlMedia: true,
-						UnfurlLinks: true,
+						UnfurlMedia: res.UnfurlMedia,
+						UnfurlLinks: res.UnfurlLinks,
 					}
 
 					responsePayloadJSON, _ := json.Marshal(responsePayload)
