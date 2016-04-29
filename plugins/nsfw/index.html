@@ -1,0 +1,25 @@
+---
+heading: NSFW Content Flagger
+subheading: Be a good citizen and flag content as NSFW
+show_back: true
+---
+
+{% include header.html %}
+
+<h3>What does this plugin do?</h3>
+<p>This plugin lets users flag their content as NSFW and disables auto expanding any links or content the users posts.
+
+<h3>How does it look?</h3>
+<p><img src="/images/nsfw.png"></p>
+
+<h3>Configuration details</h3>
+<p>URL: <a href="#">https://hooks.sscaas.eu/nsfw/?callback=&lt;your webhook URL&gt;</a><br>Method: POST</p>
+
+<h3>Usage details</h3>
+<p>/nsfw <i>your message</i><br><small>Replace 'nsfw' with your chosen slash command and <i>content</i> with the content you'd like to flag</small></p>
+
+<h3>Output details</h3>
+<p>Slackbot will post the content to the channel flagged as NSFW.</p>
+
+<p><strong>Note:</strong> This command requires you to <a href="https://slack.com/customize/emoji">add a custom emoji</a> to your Slack instance. A suitable image is available <a href="https://raw.githubusercontent.com/danielsamuels/sscaas/master/plugins/nsfw/nsfw.jpg">here</a>.</p>
+{% include footer.html %}
