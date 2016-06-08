@@ -30,7 +30,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	}
 
 	return &sscaas.PluginResponse{
-		Username: "NSFW Bot",
+		Username: "NSFW",
 		Emoji: ":nsfw:",
 		Text: fmt.Sprintf("NSFW content from %s - %s", username, text),
 		UnfurlLinks: false,

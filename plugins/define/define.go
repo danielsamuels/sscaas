@@ -55,14 +55,14 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 		)
 
 		return &sscaas.PluginResponse{
-			Username: "Dictionary Bot",
+			Username: "Dictionary",
 			Emoji:    ":book:",
 			Text:     returnString,
 		}, nil
 	}
 
 	return &sscaas.PluginResponse{
-		Username: "Dictionary Bot",
+		Username: "Dictionary",
 		Emoji:    ":book:",
 		Text:     "",
 		UnfurlLinks: true,
