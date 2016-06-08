@@ -52,7 +52,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	}
 
 	return &sscaas.PluginResponse{
-		Username: "Soundcloud Bot",
+		Username: "SoundCloud Bot",
 		Emoji:    ":speaker:",
 		Text:     fmt.Sprintf("<%v|%v>", baseData[0].Permalink_url, baseData[0].Title),
 		UnfurlLinks: true,
