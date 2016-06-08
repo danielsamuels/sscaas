@@ -48,7 +48,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 		)
 
 		return &sscaas.PluginResponse{
-			Username: "Urban Dictionary Bot",
+			Username: "Urban Dictionary",
 			Emoji:    ":poop:",
 			Text:     returnString,
 			UnfurlLinks: true,

@@ -56,7 +56,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	}
 
 	return &sscaas.PluginResponse{
-		Username: "Dellarism Bot",
+		Username: "Dellarism",
 		Emoji:    ":dellar:",
 		Text: fmt.Sprintf(
 			"%v, your Dellarism is: %v",

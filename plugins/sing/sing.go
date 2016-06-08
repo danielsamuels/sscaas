@@ -21,7 +21,7 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 	}
 
 	return &sscaas.PluginResponse{
-		Username: "Sing Bot",
+		Username: "Sing",
 		Emoji:    ":musical_score:",
 		Text: fmt.Sprintf(
 			":musical_note: %v :musical_note:",

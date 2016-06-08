@@ -18,7 +18,7 @@ type Plugin struct {
 
 func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse, error) {
     return &sscaas.PluginResponse{
-        Username: "Example Bot",
+        Username: "Example",
         Emoji: ":smile:",
         Text: "Hello world.",
     }, nil
