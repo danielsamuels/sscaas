@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 type Plugin struct {
@@ -53,6 +54,9 @@ func (p Plugin) Run(http.ResponseWriter, *http.Request) (*sscaas.PluginResponse,
 			baseData["word"],
 			baseData["text"],
 		)
+
+		returnString = strings.Replace(returnString, "<xref>", "", -1)
+		returnString = strings.Replace(returnString, "</xref>", "", -1)
 
 		return &sscaas.PluginResponse{
 			Username: "Dictionary",
